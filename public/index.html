@@ -53,6 +53,23 @@
         <h1>🎭 AI Side Reader</h1>
 
         <div class="mb-3">
+            <label for="script-input" class="form-label">Paste Lines Below (One Per Line)</label>
+            <textarea id="script-input" class="form-control mb-2" rows="5" placeholder="🎭 Paste your scene here — no quotes needed.
+
+➡️ One line of dialogue per line.
+❌ No need for character names.
+✅ Just the lines your reader will speak.
+
+Example:
+We’re done doing this the easy way.
+What do you think this is? Some kinda game?
+Guilty.
+Okay. Wow."></textarea>
+
+            <button class="btn btn-outline-dark" onclick="loadLines()">📥 Load Lines</button>
+        </div>
+
+        <div class="mb-3">
             <label for="delay" class="form-label">Auto Delay (seconds)</label>
             <input type="number" class="form-control text-center mx-auto" id="delay" value="5" style="max-width: 100px;"
                 min="1">
@@ -73,12 +90,7 @@
         const API_KEY = CONFIG.API_KEY;
         const VOICE_ID = CONFIG.VOICE_ID;
 
-        const readerLines = [
-            "We’re done doing this the easy way.",
-            "What do you think this is? Some kinda game?",
-            "Guilty.",
-            "Okay. Wow."
-        ];
+        const readerLines = [];
 
         let index = 0;
         let isPlaying = false;
@@ -161,7 +173,16 @@
         function resetReader() {
             stopAutoPlay();
             index = 0;
-            document.getElementById('current-line').innerText = readerLines[0] || "Ready to begin.";
+            document.getElementById('current-line').innerText = readerLines[0] || "📜 Ready to begin.";
+        }
+
+        function loadLines() {
+            const raw = document.getElementById('script-input').value;
+            const lines = raw.split('\n').map(line => line.trim()).filter(Boolean);
+            readerLines.length = 0;
+            readerLines.push(...lines);
+            index = 0;
+            document.getElementById('current-line').innerText = readerLines[0] || "📜 Lines loaded. Ready to read.";
         }
     </script>
 </body>
